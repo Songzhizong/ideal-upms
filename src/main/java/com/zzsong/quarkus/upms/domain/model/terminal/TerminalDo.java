@@ -1,6 +1,6 @@
 package com.zzsong.quarkus.upms.domain.model.terminal;
 
-import cn.idealframework.core.util.Asserts;
+import com.zzsong.quarkus.upms.common.Asserts;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

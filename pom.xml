@@ -39,10 +39,19 @@
   </dependencyManagement>
 
   <dependencies>
+<!--    <dependency>-->
+<!--      <groupId>cn.idealframework</groupId>-->
+<!--      <artifactId>ideal-core</artifactId>-->
+<!--      <version>1.2.x-SNAPSHOT</version>-->
+<!--    </dependency>-->
     <dependency>
-      <groupId>cn.idealframework</groupId>
-      <artifactId>ideal-core</artifactId>
-      <version>1.2.x-SNAPSHOT</version>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>jsr305</artifactId>
+      <version>3.0.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>

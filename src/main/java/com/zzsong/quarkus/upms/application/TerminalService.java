@@ -1,9 +1,9 @@
 package com.zzsong.quarkus.upms.application;
 
-import cn.idealframework.core.transmission.exception.ResourceNotFoundException;
-import cn.idealframework.core.util.Asserts;
 import com.zzsong.quarkus.upms.application.args.CreateTerminalArgs;
 import com.zzsong.quarkus.upms.application.args.UpdateTerminalArgs;
+import com.zzsong.quarkus.upms.common.Asserts;
+import com.zzsong.quarkus.upms.common.transmission.exception.ResourceNotFoundException;
 import com.zzsong.quarkus.upms.domain.model.terminal.TerminalDo;
 import com.zzsong.quarkus.upms.domain.model.terminal.TerminalRepository;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;

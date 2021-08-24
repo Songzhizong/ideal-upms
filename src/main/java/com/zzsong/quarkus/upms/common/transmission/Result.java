@@ -1,14 +1,14 @@
 package com.zzsong.quarkus.upms.common.transmission;
 
-import cn.idealframework.core.transmission.CommonResMsg;
-import cn.idealframework.core.transmission.ResMsg;
-import cn.idealframework.core.transmission.exception.VisibleException;
-import cn.idealframework.core.transmission.exception.VisibleRuntimeException;
+import com.zzsong.quarkus.upms.common.transmission.exception.VisibleException;
+import com.zzsong.quarkus.upms.common.transmission.exception.VisibleRuntimeException;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.UUID;
 import java.util.function.Function;
 
 /**
@@ -24,20 +24,14 @@ public class Result<T> {
 
   private int code = 200;
 
-  @Nullable
+  @Nonnull
   private String message;
 
   @Nullable
   private T data;
 
   public Result() {
-  }
-
-  @Nonnull
-  public static <T> Result<T> create() {
-    Result<T> res = new Result<>();
-    res.setTraceId("");
-    return res;
+    this.setTraceId(UUID.randomUUID().toString().replace("-", ""));
   }
 
   @Nonnull
@@ -68,6 +62,15 @@ public class Result<T> {
   }
 
   @Nonnull
+  public static <T> Result<T> success(@Nonnull ResMsg resMsg) {
+    Result<T> res = new Result<>();
+    res.setSuccess(true);
+    res.setCode(resMsg.code());
+    res.setMessage(resMsg.message());
+    return res;
+  }
+
+  @Nonnull
   public static <T> Result<T> failure(int code, @Nonnull String message) {
     Result<T> res = new Result<>();
     res.setSuccess(false);
@@ -82,24 +85,6 @@ public class Result<T> {
     res.setSuccess(false);
     res.setCode(resMsg.code());
     res.setMessage(resMsg.message());
-    return res;
-  }
-
-  @Nonnull
-  public static <T> Result<T> success(@Nonnull ResMsg resMsg) {
-    Result<T> res = new Result<>();
-    res.setSuccess(true);
-    res.setCode(resMsg.code());
-    res.setMessage(resMsg.message());
-    return res;
-  }
-
-  @Nonnull
-  public static <T> Result<T> success(@Nonnull ResMsg resMsg, @Nonnull String message) {
-    Result<T> res = new Result<>();
-    res.setSuccess(true);
-    res.setCode(resMsg.code());
-    res.setMessage(message);
     return res;
   }
 
@@ -120,42 +105,6 @@ public class Result<T> {
     res.setCode(CommonResMsg.SUCCESS.code());
     res.setMessage(message);
     res.setData(data);
-    return res;
-  }
-
-  @Nonnull
-  public static <T> Result<T> err() {
-    Result<T> res = new Result<>();
-    res.setSuccess(false);
-    res.setCode(CommonResMsg.BAD_REQUEST.code());
-    res.setMessage(CommonResMsg.BAD_REQUEST.message());
-    return res;
-  }
-
-  @Nonnull
-  public static <T> Result<T> err(@Nonnull String message) {
-    Result<T> res = new Result<>();
-    res.setSuccess(false);
-    res.setCode(CommonResMsg.BAD_REQUEST.code());
-    res.setMessage(message);
-    return res;
-  }
-
-  @Nonnull
-  public static <T> Result<T> err(@Nonnull ResMsg resMsg) {
-    Result<T> res = new Result<>();
-    res.setSuccess(false);
-    res.setCode(resMsg.code());
-    res.setMessage(resMsg.message());
-    return res;
-  }
-
-  @Nonnull
-  public static <T> Result<T> err(@Nonnull ResMsg resMsg, @Nonnull String message) {
-    Result<T> res = new Result<>();
-    res.setSuccess(false);
-    res.setCode(resMsg.code());
-    res.setMessage(message);
     return res;
   }
 
@@ -203,5 +152,12 @@ public class Result<T> {
       retRes.setData(function.apply(this.getData()));
     }
     return retRes;
+  }
+
+  public void setMessage(@Nullable String message) {
+    if (StringUtils.isBlank(message)) {
+      message = "";
+    }
+    this.message = message;
   }
 }
