@@ -1,0 +1,19 @@
+greeting:
+  message: "hello"
+quarkus:
+  http:
+    port: 8080
+  datasource:
+    db-kind: mysql
+    jdbc:
+      max-size: 100
+      url: jdbc:mysql://192.168.31.253:3306/ideal-quarkus?useUnicode=true&characterEncoding=utf-8&useAffectedRows=true&allowMultiQueries=true&useSSL=false&serverTimezone=Asia/Shanghai
+    username: admin
+    password: admin
+  hibernate-orm:
+    log:
+      sql: true
+    database:
+      generation: update
+  thread-pool:
+    core-threads: 50

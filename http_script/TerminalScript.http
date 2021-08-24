@@ -1,0 +1,24 @@
+### 新增
+POST http://localhost:8080/upms/terminal
+Content-Type: application/json
+
+{
+  "name": "小程序端"
+}
+
+### 更新
+PUT http://localhost:8080/upms/terminal/4
+Content-Type: application/json
+
+{
+  "name": "管理端新"
+}
+
+### 查询
+GET http://localhost:8080/upms/terminal/6
+
+### 查询所有
+GET http://localhost:8080/upms/terminal
+
+### 删除
+DELETE http://localhost:8080/upms/terminal/3
