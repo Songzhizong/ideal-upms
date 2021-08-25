@@ -15,7 +15,7 @@ Content-Type: application/json
 }
 
 ### 查询
-GET http://localhost:8080/upms/terminal/6
+GET http://10.211.55.11:8080/upms/terminal/6
 
 ### 查询所有
 GET http://localhost:8080/upms/terminal

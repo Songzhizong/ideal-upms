@@ -7,7 +7,7 @@
 #
 # Then, build the image with:
 #
-# docker build -f src/main/docker/Dockerfile.jvm -t quarkus/ideal-upms-jvm .
+# docker build -f src/main/docker/Dockerfile.jvm -t quarkus/ideal-upms-jvm:1.0.0-SNAPSHOT .
 #
 # Then run the container using:
 #
@@ -18,10 +18,10 @@
 #
 # Then run the container using :
 #
-# docker run -i --rm -p 8080:8080 -p 5005:5005 -e JAVA_ENABLE_DEBUG="true" quarkus/ideal-upms-jvm
+# docker run -i --rm -p 8080:8080 -p 5005:5005 -e JAVA_ENABLE_DEBUG="true" quarkus/ideal-upms-jvm:1.0.0-SNAPSHOT
 #
 ###
-FROM registry.access.redhat.com/ubi8/ubi-minimal:8.4 
+FROM redhat/ubi8-minimal:8.4
 
 ARG JAVA_PACKAGE=java-11-openjdk-headless
 ARG RUN_JAVA_VERSION=1.3.8

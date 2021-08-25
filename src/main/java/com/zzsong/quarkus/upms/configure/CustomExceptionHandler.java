@@ -1,6 +1,6 @@
-package com.zzsong.quarkus.upms.config;
+package com.zzsong.quarkus.upms.configure;
 
-import com.zzsong.quarkus.upms.common.transmission.Result;
+import cn.idealframework.transmission.Result;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;

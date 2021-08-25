@@ -1,9 +1,9 @@
 package com.zzsong.quarkus.upms.port.resource;
 
+import cn.idealframework.transmission.Result;
 import com.zzsong.quarkus.upms.application.TerminalService;
 import com.zzsong.quarkus.upms.application.args.CreateTerminalArgs;
 import com.zzsong.quarkus.upms.application.args.UpdateTerminalArgs;
-import com.zzsong.quarkus.upms.common.transmission.Result;
 import com.zzsong.quarkus.upms.domain.model.terminal.Terminal;
 import com.zzsong.quarkus.upms.domain.model.terminal.TerminalDo;
 import lombok.RequiredArgsConstructor;

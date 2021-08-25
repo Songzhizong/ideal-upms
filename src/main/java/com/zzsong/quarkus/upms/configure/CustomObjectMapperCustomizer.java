@@ -1,4 +1,4 @@
-package com.zzsong.quarkus.upms.config;
+package com.zzsong.quarkus.upms.configure;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.DeserializationFeature;
