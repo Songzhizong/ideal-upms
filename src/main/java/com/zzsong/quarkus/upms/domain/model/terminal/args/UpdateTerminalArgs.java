@@ -1,4 +1,4 @@
-package com.zzsong.quarkus.upms.application.args;
+package com.zzsong.quarkus.upms.domain.model.terminal.args;
 
 import lombok.Getter;
 import lombok.Setter;

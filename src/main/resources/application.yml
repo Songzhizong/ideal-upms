@@ -1,22 +1,29 @@
 quarkus:
-  http:
-    port: 8080
+  application:
+    name: ideal-upms
   datasource:
     db-kind: mysql
     jdbc:
       max-size: 256
-      url: jdbc:mysql://192.168.1.25:3306/ideal-quarkus?useUnicode=true&characterEncoding=utf-8&useAffectedRows=true&allowMultiQueries=true&useSSL=false&serverTimezone=Asia/Shanghai
+      url: jdbc:mysql://192.168.31.253:3306/ideal-quarkus?useUnicode=true&characterEncoding=utf-8&useAffectedRows=true&allowMultiQueries=true&useSSL=false&serverTimezone=Asia/Shanghai
     username: admin
     password: admin
-  thread-pool:
-    core-threads: 256
-    max-threads: 512
+  http:
+    port: 8080
   log:
     console:
       format: "%d{yyyy-MM-dd HH:mm:ss} %-5p [%c{3.}] (%t) %s%e%n"
+  shutdown:
+    timeout: 30S
+  thread-pool:
+    core-threads: 256
+    max-threads: 512
+
 
 "%dev":
   quarkus:
+    application:
+      name: ideal-upms-dev-zzsong
     hibernate-orm:
       log:
         sql: false

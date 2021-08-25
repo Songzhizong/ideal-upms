@@ -3,7 +3,7 @@ POST http://localhost:8080/upms/terminal
 Content-Type: application/json
 
 {
-  "name": "小程序端"
+  "name": "管理端"
 }
 
 ### 更新

@@ -3,7 +3,7 @@ package com.zzsong.quarkus.upms.application;
 import cn.idealframework.transmission.exception.ResourceNotFoundException;
 import cn.idealframework.util.Asserts;
 import com.zzsong.quarkus.upms.application.args.CreateTerminalArgs;
-import com.zzsong.quarkus.upms.application.args.UpdateTerminalArgs;
+import com.zzsong.quarkus.upms.domain.model.terminal.args.UpdateTerminalArgs;
 import com.zzsong.quarkus.upms.common.log.Logger;
 import com.zzsong.quarkus.upms.common.log.LoggerFactory;
 import com.zzsong.quarkus.upms.domain.model.terminal.TerminalDo;
@@ -33,7 +33,8 @@ public class TerminalService {
   public TerminalDo create(@Nonnull CreateTerminalArgs args) {
     TerminalDo terminalDo = TerminalDo.create(args.getName());
     terminalRepository.persistAndFlush(terminalDo);
-    log.info("新增终端: {} - {}", terminalDo.getId(), terminalDo.getName());
+    log.info("新增终端: {} - {}",
+        terminalDo.getId(), terminalDo.getName());
     return terminalDo;
   }
 
@@ -68,7 +69,7 @@ public class TerminalService {
       log.info("更新失败, 终端: {} 不存在", id);
       throw new ResourceNotFoundException("终端不存在");
     }
-    terminalDo.setName(args.getName());
+    terminalDo.update(args);
     terminalRepository.persistAndFlush(terminalDo);
     log.info("修改终端: {} 信息", id);
     return terminalDo;

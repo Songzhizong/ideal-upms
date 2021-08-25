@@ -1,9 +1,11 @@
 package com.zzsong.quarkus.upms.domain.model.terminal;
 
 import cn.idealframework.util.Asserts;
+import com.zzsong.quarkus.upms.domain.model.terminal.args.UpdateTerminalArgs;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.annotation.Nonnull;
 import javax.persistence.*;
@@ -25,7 +27,11 @@ public class TerminalDo {
   public static final String ENTITY_NAME = "upms_terminal";
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Nonnull
+  @GeneratedValue(generator = "upms_terminal_generator")
+  @GenericGenerator(name = "upms_terminal_generator",
+      strategy = "cn.idealframework.id.JpaIDGenerator")
+  @Column(nullable = false, updatable = false)
   private Long id;
 
   /** 终端名称 */
@@ -69,11 +75,16 @@ public class TerminalDo {
     return terminal;
   }
 
+  public void update(@Nonnull UpdateTerminalArgs args) {
+    this.setName(args.getName());
+  }
+
+  @Nonnull
   public Long getId() {
     return id;
   }
 
-  public void setId(Long id) {
+  protected void setId(@Nonnull Long id) {
     this.id = id;
   }
 
@@ -82,7 +93,7 @@ public class TerminalDo {
     return name;
   }
 
-  public void setName(@Nonnull String name) {
+  protected void setName(@Nonnull String name) {
     Asserts.notBlank(name, "终端名称不能为空");
     this.name = name;
   }
@@ -91,7 +102,7 @@ public class TerminalDo {
     return version;
   }
 
-  public void setVersion(long version) {
+  protected void setVersion(long version) {
     this.version = version;
   }
 
@@ -100,7 +111,7 @@ public class TerminalDo {
     return createdTime;
   }
 
-  public void setCreatedTime(@Nonnull LocalDateTime createdTime) {
+  protected void setCreatedTime(@Nonnull LocalDateTime createdTime) {
     this.createdTime = createdTime;
   }
 
@@ -109,7 +120,7 @@ public class TerminalDo {
     return updatedTime;
   }
 
-  public void setUpdatedTime(@Nonnull LocalDateTime updatedTime) {
+  protected void setUpdatedTime(@Nonnull LocalDateTime updatedTime) {
     this.updatedTime = updatedTime;
   }
 }
