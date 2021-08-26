@@ -4,7 +4,6 @@ import cn.idealframework.util.Asserts;
 import com.zzsong.quarkus.upms.domain.model.terminal.args.UpdateTerminalArgs;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.annotation.Nonnull;
@@ -21,7 +20,6 @@ import java.time.LocalDateTime;
         @Index(name = "uk_name", columnList = "name", unique = true)
     })
 @org.hibernate.annotations.Table(appliesTo = TerminalDo.ENTITY_NAME, comment = "终端信息")
-@Slf4j
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TerminalDo {
   public static final String ENTITY_NAME = "upms_terminal";
@@ -77,6 +75,7 @@ public class TerminalDo {
 
   public void update(@Nonnull UpdateTerminalArgs args) {
     this.setName(args.getName());
+    this.setUpdatedTime(LocalDateTime.now());
   }
 
   @Nonnull

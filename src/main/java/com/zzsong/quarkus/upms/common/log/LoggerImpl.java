@@ -199,7 +199,10 @@ public class LoggerImpl implements Logger {
     Optional<TraceContext> optional = TraceContextHolder.current();
     if (optional.isPresent()) {
       TraceContext traceContext = optional.get();
-      format = traceContext.getTraceId() + " -> " + format;
+      String mode = traceContext.getMode();
+      String traceId = traceContext.getTraceId();
+      String spanId = traceContext.getSpanId();
+      format = mode + ":" + traceId + ":" + spanId + " -> " + format;
     }
     return format;
   }
