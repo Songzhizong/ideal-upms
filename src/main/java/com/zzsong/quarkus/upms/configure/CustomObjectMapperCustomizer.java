@@ -15,6 +15,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import io.quarkus.jackson.ObjectMapperCustomizer;
 
+import javax.annotation.Nonnull;
 import javax.enterprise.context.ApplicationScoped;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -31,7 +32,7 @@ import java.time.format.DateTimeFormatter;
 public class CustomObjectMapperCustomizer implements ObjectMapperCustomizer {
 
   @Override
-  public void customize(ObjectMapper objectMapper) {
+  public void customize(@Nonnull ObjectMapper objectMapper) {
     objectMapper
         // 对于空的对象转json的时候不抛出错误
         .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)

@@ -1,0 +1,22 @@
+###
+POST http://localhost:8080/upms/user/register
+Content-Type: application/json
+
+{
+  "name": "宋志宗",
+  "account": "",
+  "mobile": "18256928780",
+  "email": "",
+  "password": "password",
+  "gender": "MALE",
+  "certificate": "IDENTITY_CARD",
+  "certificateNO": "",
+  "birthday": "1991-02-10",
+  "profilePhoto": ""
+}
+
+###
+POST http://localhost:8080/upms/user/findByCredentialsAndPassword
+Content-Type: application/x-www-form-urlencoded
+
+credentials=18256928780&password=password

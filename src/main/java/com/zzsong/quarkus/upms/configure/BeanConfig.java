@@ -4,8 +4,12 @@ import cn.idealframework.id.DatabaseIDGeneratorFactory;
 import cn.idealframework.id.IDGenerator;
 import cn.idealframework.id.IDGeneratorFactory;
 import cn.idealframework.id.JpaIDGenerator;
-import com.zzsong.quarkus.upms.common.log.Logger;
-import com.zzsong.quarkus.upms.common.log.LoggerFactory;
+import cn.idealframework.log.Logger;
+import cn.idealframework.log.LoggerFactory;
+import cn.idealframework.trace.TraceContextHolder;
+import cn.idealframework.trace.impl.IDGeneratorTraceIdGenerator;
+import com.zzsong.quarkus.upms.infrastructure.password.MD5PasswordEncoder;
+import com.zzsong.quarkus.upms.infrastructure.password.PasswordEncoder;
 import lombok.RequiredArgsConstructor;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
@@ -28,9 +32,18 @@ public class BeanConfig {
   @Produces
   public IDGeneratorFactory idGeneratorFactory() {
     log.info("init IDGeneratorFactory");
-    DatabaseIDGeneratorFactory factory = new DatabaseIDGeneratorFactory(0, applicationName, dataSource);
+    IDGeneratorFactory factory = new DatabaseIDGeneratorFactory(0, applicationName, dataSource);
+//    IDGeneratorFactory factory = new FixedIDGeneratorFactory(0, 0);
     IDGenerator jpaIdGenerator = factory.getGenerator("JPA");
     JpaIDGenerator.setIdGenerator(jpaIdGenerator);
+    IDGenerator traceIdGenerator = factory.getGenerator("TRACE");
+    TraceContextHolder.setTraceIdGenerator(new IDGeneratorTraceIdGenerator(traceIdGenerator));
     return factory;
   }
+
+  @Produces
+  public PasswordEncoder passwordEncoder() {
+    return new MD5PasswordEncoder("Vd3.HARj_itxmX*Z7WTx!njtywesJxP8");
+  }
+
 }

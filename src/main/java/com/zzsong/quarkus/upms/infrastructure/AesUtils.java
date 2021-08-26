@@ -1,8 +1,8 @@
-package com.zzsong.quarkus.upms.common;
+package com.zzsong.quarkus.upms.infrastructure;
 
 import cn.idealframework.lang.StringUtils;
-import com.zzsong.quarkus.upms.common.log.Logger;
-import com.zzsong.quarkus.upms.common.log.LoggerFactory;
+import cn.idealframework.log.Logger;
+import cn.idealframework.log.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;

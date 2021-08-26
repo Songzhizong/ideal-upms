@@ -4,10 +4,12 @@ import cn.idealframework.crypto.AES;
 import cn.idealframework.lang.StringUtils;
 import cn.idealframework.util.Asserts;
 import cn.idealframework.util.CheckUtils;
-import com.zzsong.quarkus.upms.common.AesUtils;
+import com.zzsong.quarkus.upms.infrastructure.AesUtils;
 import com.zzsong.quarkus.upms.domain.model.user.args.CreateUserArgs;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.annotation.Nonnull;
@@ -29,6 +31,8 @@ import java.util.UUID;
         @Index(name = "uk_email", columnList = "email", unique = true),
         @Index(name = "uck_certificate", columnList = "certificate,certificateNO", unique = true),
     })
+@Getter
+@Setter(AccessLevel.PROTECTED)
 @org.hibernate.annotations.Table(appliesTo = UserDo.ENTITY_NAME, comment = "用户信息")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserDo {
@@ -113,8 +117,8 @@ public class UserDo {
   public static UserDo create(@Nonnull CreateUserArgs args) {
     String account = args.getAccount();
     String mobile = args.getMobile();
-    Asserts.assertFalse(StringUtils.isBlank(account) && StringUtils.isBlank(mobile),
-        "账号与手机号不能同时为空");
+    boolean expression = StringUtils.isBlank(account) && StringUtils.isBlank(mobile);
+    Asserts.assertFalse(expression, "账号与手机号不能同时为空");
     UserDo userDo = new UserDo();
     userDo.setName(args.getName());
     userDo.setAccount(account);
@@ -122,8 +126,17 @@ public class UserDo {
     userDo.setEmail(args.getEmail());
     userDo.setPassword(args.getPassword());
     userDo.setGender(args.getGender());
-    userDo.setCertificate(args.getCertificate());
-    userDo.setCertificateNO(args.getCertificateNO());
+    CertificateEnum certificate = args.getCertificate();
+    String certificateNO = args.getCertificateNO();
+    if (certificate != null
+        && certificate != CertificateEnum.NONE
+        && StringUtils.isNotBlank(certificateNO)) {
+      userDo.setCertificate(certificate);
+      userDo.setCertificateNO(certificateNO);
+    } else {
+      userDo.setCertificate(null);
+      userDo.setCertificateNO(null);
+    }
     userDo.setBirthday(args.getBirthday());
     userDo.setProfilePhoto(args.getProfilePhoto());
     userDo.setVersion(0);
@@ -163,6 +176,9 @@ public class UserDo {
 
   @Transient
   private boolean isUidCipherText(@Nonnull String ciphertext) {
+    if (StringUtils.isBlank(ciphertext)) {
+      return false;
+    }
     String decrypt = decrypt(ciphertext);
     return isUid(decrypt);
   }
@@ -178,20 +194,11 @@ public class UserDo {
   }
 
   @Nonnull
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(@Nonnull Long id) {
-    this.id = id;
-  }
-
-  @Nonnull
   public String getName() {
     return name;
   }
 
-  public void setName(@Nullable String name) {
+  protected void setName(@Nullable String name) {
     if (StringUtils.isBlank(name)) {
       name = "";
     }
@@ -210,7 +217,7 @@ public class UserDo {
     return decrypt;
   }
 
-  public void setAccount(@Nullable String account) {
+  protected void setAccount(@Nullable String account) {
     if (StringUtils.isBlank(account)) {
       if (isUidCipherText(this.account)) {
         return;
@@ -218,7 +225,7 @@ public class UserDo {
         account = generateUid();
       }
     } else {
-      CheckUtils.checkMobile(account, "Illegal mobile");
+      CheckUtils.checkAccount(account, "Illegal account");
     }
     this.account = encrypt(account);
   }
@@ -235,7 +242,7 @@ public class UserDo {
     return decrypt;
   }
 
-  public void setMobile(@Nullable String mobile) {
+  protected void setMobile(@Nullable String mobile) {
     if (StringUtils.isBlank(mobile)) {
       if (isUidCipherText(this.mobile)) {
         return;
@@ -260,7 +267,7 @@ public class UserDo {
     return decrypt;
   }
 
-  public void setEmail(@Nullable String email) {
+  protected void setEmail(@Nullable String email) {
     if (StringUtils.isBlank(email)) {
       if (isUidCipherText(this.email)) {
         return;
@@ -268,7 +275,7 @@ public class UserDo {
         email = generateUid();
       }
     } else {
-      CheckUtils.checkMobile(email, "Illegal mobile");
+      CheckUtils.checkEmail(email, "Illegal email");
     }
     this.email = encrypt(email);
   }
@@ -281,17 +288,12 @@ public class UserDo {
     return decrypt(password);
   }
 
-  public void setPassword(@Nonnull String password) {
+  protected void setPassword(@Nonnull String password) {
     Asserts.notBlank(password, "密码不能为空");
     this.password = encrypt(password);
   }
 
-  @Nonnull
-  public GenderEnum getGender() {
-    return gender;
-  }
-
-  public void setGender(@Nullable GenderEnum gender) {
+  protected void setGender(@Nullable GenderEnum gender) {
     if (gender == null) {
       gender = GenderEnum.SECRET;
     }
@@ -306,7 +308,7 @@ public class UserDo {
     return certificate;
   }
 
-  public void setCertificate(@Nullable CertificateEnum certificate) {
+  protected void setCertificate(@Nullable CertificateEnum certificate) {
     if (certificate == null) {
       certificate = CertificateEnum.NONE;
     }
@@ -315,60 +317,31 @@ public class UserDo {
 
   @Nonnull
   public String getCertificateNO() {
-    return certificateNO;
-  }
-
-  public void setCertificateNO(@Nullable String certificateNO) {
     if (StringUtils.isBlank(certificateNO)) {
-      certificateNO = "";
+      return "";
     }
-    this.certificateNO = certificateNO;
+    String decrypt = decrypt(certificateNO);
+    if (isUid(decrypt)) {
+      return "";
+    }
+    return decrypt;
   }
 
-  @Nullable
-  public LocalDate getBirthday() {
-    return birthday;
+  protected void setCertificateNO(@Nullable String certificateNO) {
+    if (StringUtils.isBlank(certificateNO)) {
+      if (isUidCipherText(this.certificateNO)) {
+        return;
+      } else {
+        certificateNO = generateUid();
+      }
+    }
+    this.certificateNO = encrypt(certificateNO);
   }
 
-  public void setBirthday(@Nullable LocalDate birthday) {
-    this.birthday = birthday;
-  }
-
-  @Nonnull
-  public String getProfilePhoto() {
-    return profilePhoto;
-  }
-
-  public void setProfilePhoto(@Nullable String profilePhoto) {
+  protected void setProfilePhoto(@Nullable String profilePhoto) {
     if (StringUtils.isBlank(profilePhoto)) {
       profilePhoto = "";
     }
     this.profilePhoto = profilePhoto;
-  }
-
-  public long getVersion() {
-    return version;
-  }
-
-  public void setVersion(long version) {
-    this.version = version;
-  }
-
-  @Nonnull
-  public LocalDateTime getCreatedTime() {
-    return createdTime;
-  }
-
-  public void setCreatedTime(@Nonnull LocalDateTime createdTime) {
-    this.createdTime = createdTime;
-  }
-
-  @Nonnull
-  public LocalDateTime getUpdatedTime() {
-    return updatedTime;
-  }
-
-  public void setUpdatedTime(@Nonnull LocalDateTime updatedTime) {
-    this.updatedTime = updatedTime;
   }
 }

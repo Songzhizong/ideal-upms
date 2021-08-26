@@ -1,8 +1,8 @@
 package com.zzsong.quarkus.upms.configure;
 
 import cn.idealframework.id.IDGeneratorFactory;
-import com.zzsong.quarkus.upms.common.log.Logger;
-import com.zzsong.quarkus.upms.common.log.LoggerFactory;
+import cn.idealframework.log.Logger;
+import cn.idealframework.log.LoggerFactory;
 import io.quarkus.runtime.ShutdownEvent;
 import io.quarkus.runtime.StartupEvent;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +11,8 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 
 /**
+ * 服务启动和停止处理
+ *
  * @author 宋志宗 on 2021/8/25
  */
 @ApplicationScoped
@@ -25,5 +27,6 @@ public class ApplicationLifecycle {
 
   void onShutdown(@Observes ShutdownEvent shutdownEvent) {
     idGeneratorFactory.release();
+    log.info("Shutting down server...");
   }
 }

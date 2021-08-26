@@ -26,6 +26,6 @@ quarkus:
       name: ideal-upms-dev-zzsong
     hibernate-orm:
       log:
-        sql: false
+        sql: true
       database:
         generation: update
